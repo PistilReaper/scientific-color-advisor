@@ -1,5 +1,7 @@
 # Scientific Color Advisor
 
+[中文说明](./README_CN.md)
+
 Scientific Color Advisor is an Agent Skills style repository for scientific figure palettes and PPT color systems. It ships with a local Node CLI, a vendored snapshot of [Scientific-Color-Lab](https://github.com/groele/Scientific-Color-Lab), diagnostic scoring, and export-ready outputs for plotting workflows.
 
 ## Features
@@ -54,6 +56,81 @@ Check runtime mode and optional local-repo compatibility:
 ```bash
 node skill/scripts/scientific-color-cli.mjs doctor --repo /path/to/Scientific-Color-Lab
 ```
+
+## Example Results
+
+These examples show the kind of recommendation payloads the repository actually produces.
+
+### 1. Manuscript-safe line plot
+
+Command:
+
+```bash
+node skill/scripts/scientific-color-cli.mjs recommend --target scientific-figure --chart-type line-plot --palette-class qualitative --usage manuscript --background light --tone restrained --priority colorblind-safe --priority avoid-red-green
+```
+
+Result snapshot:
+
+- Template: `Manuscript Cool`
+- Why it works: manuscript-safe, restrained, avoids obvious red/green conflicts
+- Suggested quick fixes: `increase-categorical-spacing`, `suggest-safer-template`
+
+Snapshot:
+
+![Manuscript-safe line plot snapshot](./docs/generated/line-plot-example.svg)
+
+### 2. Dark heatmap export pack
+
+Command:
+
+```bash
+node skill/scripts/scientific-color-cli.mjs export --target scientific-figure --chart-type heatmap --palette-class sequential --usage poster --background dark --tone strong --format matplotlib --format css
+```
+
+Selected template:
+
+- `Magma Dark Heatmap Dark`
+
+Excerpt:
+
+```python
+scientific_color_lab = [
+    {"name": "magma-dark-heatmap-dark 1", "hex": "#000004"},
+    {"name": "magma-dark-heatmap-dark 5", "hex": "#9E2F7F"},
+    {"name": "magma-dark-heatmap-dark 9", "hex": "#FCFDBF"},
+]
+```
+
+```css
+:root {
+  --magma_dark_heatmap_dark-1: #000004;
+  --magma_dark_heatmap_dark-5: #9E2F7F;
+  --magma_dark_heatmap_dark-9: #FCFDBF;
+}
+```
+
+Snapshot:
+
+![Dark heatmap export snapshot](./docs/generated/heatmap-export-example.svg)
+
+### 3. PPT slide-role pack
+
+Command:
+
+```bash
+node skill/scripts/scientific-color-cli.mjs recommend --target ppt --chart-type presentation-slide --palette-class qualitative --usage course-slides --background dark --tone strong
+```
+
+Result snapshot:
+
+- Template: `Slide Minimal Dark`
+- Title color: `#F6F5F1`
+- Body text color: `#E8E4DE`
+- Accent colors: `#274F69`, `#AF845F`, `#D9D2CA`
+
+Snapshot:
+
+![PPT role pack snapshot](./docs/generated/ppt-role-pack-example.svg)
 
 ## Skill Layout
 
@@ -117,6 +194,12 @@ The local bridge currently verifies:
 - upstream commit identity when Git metadata is available
 
 ## Development
+
+Regenerate README example snapshots:
+
+```bash
+node tools/generate-readme-examples.mjs
+```
 
 Sync vendored template data:
 

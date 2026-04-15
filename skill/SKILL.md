@@ -46,6 +46,15 @@ Health check:
 node scripts/scientific-color-cli.mjs doctor --repo C:/path/to/Scientific-Color-Lab
 ```
 
+## Canonical Examples
+
+- Manuscript line plot:
+  `node scripts/scientific-color-cli.mjs recommend --target scientific-figure --chart-type line-plot --palette-class qualitative --usage manuscript --background light --tone restrained --priority colorblind-safe --priority avoid-red-green`
+- Poster heatmap export:
+  `node scripts/scientific-color-cli.mjs export --target scientific-figure --chart-type heatmap --palette-class sequential --usage poster --background dark --tone strong --format matplotlib --format css`
+- Course-slide PPT pack:
+  `node scripts/scientific-color-cli.mjs recommend --target ppt --chart-type presentation-slide --palette-class qualitative --usage course-slides --background dark --tone strong`
+
 ## Output Guidance
 
 - Keep the response concise and practical.
