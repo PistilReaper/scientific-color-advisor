@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { fileURLToPath } from 'node:url';
 import { buildExportBundle, doctor, recommendPalettes } from '../vendor/scientific-color-lab-core/core.mjs';
 
 export function parseArgs(argv) {
@@ -149,6 +150,10 @@ export function runCli(argv, io = { stdout: console.log, stderr: console.error }
   }
 }
 
+export function isDirectExecution(metaUrl, argv1) {
+  return Boolean(argv1) && fileURLToPath(metaUrl) === argv1;
+}
+
 function main() {
   const code = runCli(process.argv.slice(2));
   if (code !== 0) {
@@ -156,6 +161,6 @@ function main() {
   }
 }
 
-if (import.meta.url === `file://${process.argv[1].replace(/\\/g, '/')}`) {
+if (isDirectExecution(import.meta.url, process.argv[1])) {
   main();
 }

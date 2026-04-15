@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import { runCli } from '../skill/scripts/scientific-color-cli.mjs';
+import path from 'node:path';
+import { isDirectExecution, runCli } from '../skill/scripts/scientific-color-cli.mjs';
 
 function capture(argv) {
   const chunks = [];
@@ -59,4 +60,10 @@ run('CLI export emits human-readable payload blocks', () => {
   assert.equal(result.code, 0);
   assert.ok(result.stdout.includes('=== summary ==='));
   assert.ok(result.stdout.includes('=== css ==='));
+});
+
+run('CLI entrypoint detection matches the script path', () => {
+  const scriptPath = path.resolve('skill/scripts/scientific-color-cli.mjs');
+  const metaUrl = new URL('../skill/scripts/scientific-color-cli.mjs', import.meta.url).href;
+  assert.equal(isDirectExecution(metaUrl, scriptPath), true);
 });
